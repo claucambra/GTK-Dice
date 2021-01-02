@@ -1,0 +1,7 @@
+data/org.claucambra.GTK-Dice.desktop.in
+data/org.claucambra.GTK-Dice.appdata.xml.in
+data/org.claucambra.GTK-Dice.gschema.xml
+src/gtk_dice-window.ui
+src/main.c
+src/gtk_dice-window.c
+
