@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<schemalist gettext-domain="gtk-dice">
-	<schema id="org.claucambra.GTK-Dice" path="/org/claucambra/GTK-Dice/">
-	</schema>
-</schemalist>
