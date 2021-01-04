@@ -10,9 +10,9 @@ int roll_history[10000];
 
 static void
 print_die(GtkWidget *widget, gpointer data) {
-	char output[10];
-	sprintf(output, "%i\n", rand() % sides_dice + 1);
-	gtk_label_set_text(GTK_LABEL(total_display_label), output);
+	char output[50];
+	sprintf(output, "<big><b>%i</b></big>", rand() % sides_dice + 1);
+	gtk_label_set_markup(GTK_LABEL(total_display_label), output);
 }
 
 // called when window is closed
