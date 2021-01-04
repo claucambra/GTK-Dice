@@ -1,5 +1,7 @@
 #include <gtk/gtk.h>
 
+GtkWidget *total_display_label;
+
 int sides_dice = 6;
 int num_dice = 2;
 
@@ -8,7 +10,9 @@ int roll_history[10000];
 
 static void
 print_die(GtkWidget *widget, gpointer data) {
-	g_print("%i\n", rand() % sides_dice + 1);
+	char output[10];
+	sprintf(output, "%i\n", rand() % sides_dice + 1);
+	gtk_label_set_text(GTK_LABEL(total_display_label), output);
 }
 
 // called when window is closed
@@ -39,6 +43,8 @@ int main (int argc, char **argv) { //Main function should be as small as possibl
 	
 	button = gtk_builder_get_object (builder, "roll_button");
 	g_signal_connect (button, "clicked", G_CALLBACK(print_die), NULL);
+	
+	total_display_label = GTK_WIDGET(gtk_builder_get_object(builder, "total_display"));
 	
 	//Random num generator for dice, seed set as current time
 	srand(time(NULL));
