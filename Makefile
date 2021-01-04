@@ -1,27 +1,32 @@
-CC ?= gcc
-PKGCONFIG = $(shell which pkg-config)
-CFLAGS = $(shell $(PKGCONFIG) --cflags gtk+-3.0)
-LIBS = $(shell $(PKGCONFIG) --libs gtk+-3.0)
-GLIB_COMPILE_RESOURCES = $(shell $(PKGCONFIG) --variable=glib_compile_resources gio-2.0)
+# change application name here (executable output name)
+TARGET=dice_app
 
-SRC = diceapp.c diceapp_window.c main.c
-BUILT_SRC = resources.c
+# compiler
+CC=gcc
+# debug
+DEBUG=-g
+# optimisation
+OPT=-O0
+# warnings
+WARN=-Wall
 
-OBJS = $(BUILT_SRC:.c=.o) $(SRC:.c=.o)
+PTHREAD=-pthread
 
-all: diceapp
+CCFLAGS=$(DEBUG) $(OPT) $(WARN) $(PTHREAD) -pipe
 
-resources.c: dice.gresource.xml gtk-dice.ui
-	$(GLIB_COMPILE_RESOURCES) dice.gresource.xml --target=$@ --sourcedir=. --generate-source
+GTKLIB=`pkg-config --cflags --libs gtk+-3.0`
 
-%.o: %.c
-	$(CC) -c -o $(@F) $(CFLAGS) $<
+# linker
+LD=gcc
+LDFLAGS=$(PTHREAD) $(GTKLIB) -export-dynamic
 
-diceapp: $(OBJS)
-	$(CC) -o $(@F) $(OBJS) $(LIBS)
+OBJS=	main.o
 
+all: $(OBJS)
+	$(LD) -o $(TARGET) $(OBJS) $(LDFLAGS)
+    
+main.o: src/main.c
+	$(CC) -c $(CCFLAGS) src/main.c $(GTKLIB) -o main.o
+	
 clean:
-	rm -f $(BUILT_SRC)
-	rm -f $(OBJS)
-	rm -f diceeapp
-
+	rm -f *.o $(TARGET)
