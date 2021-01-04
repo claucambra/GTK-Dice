@@ -43,8 +43,8 @@ int main (int argc, char **argv) { //Main function should be as small as possibl
 	//Random num generator for dice, seed set as current time
 	srand(time(NULL));
 	
-	g_object_unref(builder);
-	gtk_widget_show(GTK_WIDGET (window));                
+	g_object_unref(builder); // Free builder from memory
+	gtk_widget_show(GTK_WIDGET (window)); //Show the window 
 	gtk_main();
 	
 	return 0;
