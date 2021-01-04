@@ -27,10 +27,12 @@
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
+            <property name="spacing">10</property>
             <child>
               <object class="GtkButtonBox">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="spacing">5</property>
                 <property name="homogeneous">True</property>
                 <property name="layout-style">expand</property>
                 <child>
@@ -42,7 +44,7 @@
                       <object class="GtkLabel" id="sides_label">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Sides:</property>
+                        <property name="label" translatable="yes">Dice sides:</property>
                       </object>
                       <packing>
                         <property name="expand">True</property>
