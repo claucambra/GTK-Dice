@@ -11,6 +11,12 @@ print_die(GtkWidget *widget, gpointer data) {
 	g_print("%i\n", rand() % sides_dice + 1);
 }
 
+// called when window is closed
+void on_window_main_destroy()
+{
+    gtk_main_quit();
+}
+
 int main (int argc, char **argv) { //Main function should be as small as possible.
 	GtkBuilder *builder;
 	GObject *window;
@@ -28,21 +34,17 @@ int main (int argc, char **argv) { //Main function should be as small as possibl
 	} 
 	  
 	// Connect signal handlers to constructed widgets
-	window = gtk_builder_get_object (builder, "window");
-	g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
+	window = gtk_builder_get_object(builder, "main_window");
+    g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
 	
-	button = gtk_builder_get_object (builder, "print_button");
+	button = gtk_builder_get_object (builder, "roll_button");
 	g_signal_connect (button, "clicked", G_CALLBACK(print_die), NULL);
-	
-	// button = gtk_builder_get_object (builder, "test_button");
-	// g_signal_connect (button, "clicked", G_CALLBACK(), NULL);
-	
-	button = gtk_builder_get_object (builder, "quit_button");
-	g_signal_connect (button, "clicked", G_CALLBACK(gtk_main_quit), NULL);
 	
 	//Random num generator for dice, seed set as current time
 	srand(time(NULL));
 	
+	g_object_unref(builder);
+	gtk_widget_show(GTK_WIDGET (window));                
 	gtk_main();
 	
 	return 0;
