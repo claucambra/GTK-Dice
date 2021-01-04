@@ -9,6 +9,7 @@ G_DECLARE_FINAL_TYPE (DiceApp, dice_app, DICE, APP, GtkApplication)
 
 
 DiceApp *dice_app_new (void);
+static void print_die();
 
 
 #endif /* __DICEAPP_H */
