@@ -8,7 +8,7 @@ GtkWidget *amount_input_spin;
 
 // Dice defaults
 int sides_dice = 6;
-int num_dice = 20;
+int amount_dice = 2;
 
 int dice_rack[1000]; // Holds all roll values
 int roll_history[10000]; // History of roll totals
@@ -45,7 +45,7 @@ void roll_dice() { // Called by roll button
 	int roll_total = 0;
 	
 	memset(dice_rack, 0, sizeof dice_rack);
-	for(int i = 0; i < num_dice; i++) {
+	for(int i = 0; i < amount_dice; i++) {
 		dice_rack[i] = rand() % sides_dice + 1;
 		roll_total += dice_rack[i];
 	}
@@ -59,16 +59,25 @@ void roll_dice() { // Called by roll button
 	print_dice();
 }
 
+void sides_spin_handler() {
+	int quantity = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(sides_input_spin));
+	sides_dice = quantity;
+}
+
+void amount_spin_handler() {
+	int quantity = gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(amount_input_spin));
+	amount_dice = quantity;
+}
+
 // Called when window is closed
-void on_window_main_destroy()
-{
+void on_main_window_destroy() {
     gtk_main_quit();
 }
 
 int main (int argc, char **argv) { //Main function should be as small as possible.
 	GtkBuilder *builder;
 	GObject *window;
-	GObject *button;
+	// GObject *button;
 	GError *error = NULL;
 	  
 	gtk_init(&argc, &argv);
@@ -81,12 +90,16 @@ int main (int argc, char **argv) { //Main function should be as small as possibl
 		return 1;
 	} 
 	  
-	// Connect signal handlers to constructed widgets
-	window = gtk_builder_get_object(builder, "main_window");
-    g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
+	// Signal connections brought in from XML
+	gtk_builder_connect_signals(builder, NULL);
 	
-	button = gtk_builder_get_object (builder, "roll_button");
-	g_signal_connect (button, "clicked", G_CALLBACK(roll_dice), NULL);
+	window = gtk_builder_get_object(builder, "main_window");
+	
+	// Otherwise, we can use these:
+	// Connect signal handlers to constructed widgets
+    // g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
+	// button = gtk_builder_get_object (builder, "roll_button");
+	// g_signal_connect (button, "clicked", G_CALLBACK(roll_dice), NULL);
 	
 	// Connecting builder widgets to previously defined interactive elements
 	total_display_label = GTK_WIDGET(gtk_builder_get_object(builder, "total_display"));
@@ -96,6 +109,7 @@ int main (int argc, char **argv) { //Main function should be as small as possibl
 	
 	// Set spin input numbers to default values
 	gtk_spin_button_set_value((GtkSpinButton*)sides_input_spin, sides_dice);
+	gtk_spin_button_set_value((GtkSpinButton*)amount_input_spin, amount_dice);
 	
 	//Random num generator for dice, seed set as current time
 	srand(time(NULL));
