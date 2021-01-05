@@ -22,8 +22,9 @@ static void print_dice() {
 		total += dice_rack[i];
 		i++;
 	}
-	sprintf(buffer, "\nTOTAL: %i", total);
-	strcat(output, buffer);
+	sprintf(buffer, "TOTAL: %i", total);
+	//strcat was causing garbling...
+	strcpy(output, buffer);
 	memset(buffer, 0, sizeof buffer);
 	gtk_label_set_text(GTK_LABEL(total_display_label), output);
 	memset(output, 0, sizeof output);
