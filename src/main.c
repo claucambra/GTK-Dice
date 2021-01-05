@@ -1,23 +1,30 @@
 #include <gtk/gtk.h>
 
+// Defining interactive elements
 GtkWidget *total_display_label;
 GtkWidget *list_display_label;
+GtkWidget *sides_input_spin;
+GtkWidget *amount_input_spin;
 
 // Dice defaults
 int sides_dice = 6;
 int num_dice = 20;
 
-int dice_rack[1000];
-int roll_history[10000];
+int dice_rack[1000]; // Holds all roll values
+int roll_history[10000]; // History of roll totals
 
 static void print_dice() {
-	char output[1024];
+	char output[1024]; // String that gets pushed onto label
 	output[0] = '\0';
 	int i = 0;
 	int total = 0;
-	char list_buffer[50];
+	char list_buffer[50]; // Where each line of the list is held
 	while(dice_rack[i] != 0) {
-		sprintf(list_buffer, "DICE %i: %i\n", i + 1, dice_rack[i]);
+		if(i == 0) // Avoid first line of results starting on second line of label
+			sprintf(list_buffer, "DICE %i: %i", i + 1, dice_rack[i]);
+		else
+			sprintf(list_buffer, "\nDICE %i: %i", i + 1, dice_rack[i]);
+			
 		g_strlcat(output, list_buffer, 1024); 
 		total += dice_rack[i];
 		i++;
@@ -34,7 +41,7 @@ static void print_dice() {
 	memset(output, 0, sizeof output);
 }
 
-void roll_dice() {
+void roll_dice() { // Called by roll button
 	int roll_total = 0;
 	
 	memset(dice_rack, 0, sizeof dice_rack);
@@ -57,7 +64,6 @@ void on_window_main_destroy()
 {
     gtk_main_quit();
 }
-
 
 int main (int argc, char **argv) { //Main function should be as small as possible.
 	GtkBuilder *builder;
@@ -82,8 +88,14 @@ int main (int argc, char **argv) { //Main function should be as small as possibl
 	button = gtk_builder_get_object (builder, "roll_button");
 	g_signal_connect (button, "clicked", G_CALLBACK(roll_dice), NULL);
 	
+	// Connecting builder widgets to previously defined interactive elements
 	total_display_label = GTK_WIDGET(gtk_builder_get_object(builder, "total_display"));
 	list_display_label = GTK_WIDGET(gtk_builder_get_object(builder, "list_display"));
+	sides_input_spin = GTK_WIDGET(gtk_builder_get_object(builder, "sides_input"));
+	amount_input_spin = GTK_WIDGET(gtk_builder_get_object(builder, "amount_input"));
+	
+	// Set spin input numbers to default values
+	gtk_spin_button_set_value((GtkSpinButton*)sides_input_spin, sides_dice);
 	
 	//Random num generator for dice, seed set as current time
 	srand(time(NULL));
