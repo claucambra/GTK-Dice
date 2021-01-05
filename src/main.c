@@ -2,7 +2,6 @@
 
 GtkWidget *total_display_label;
 
-
 // Dice defaults
 int sides_dice = 6;
 int num_dice = 2;
@@ -12,21 +11,22 @@ int roll_history[10000];
 
 static void print_dice() {
 	char output[1024];
-	//sprintf(output, "<big><b>%i</b></big>", rand() % sides_dice + 1);
 	int i = 0;
 	int total = 0;
-	char buffer[50];
+	char list_buffer[50];
 	while(dice_rack[i] != 0) {
-		//sprintf(buffer, "DICE %i: %i\n", i + 1, dice_rack[i]);
-		//strcat(output, buffer); 
+		sprintf(list_buffer, "DICE %i: %i\n", i + 1, dice_rack[i]);
+		g_strlcat(output, list_buffer, 1024); 
 		total += dice_rack[i];
 		i++;
 	}
-	sprintf(buffer, "TOTAL: %i", total);
-	//strcat was causing garbling...
-	strcpy(output, buffer);
-	memset(buffer, 0, sizeof buffer);
-	gtk_label_set_text(GTK_LABEL(total_display_label), output);
+
+	memset(list_buffer, 0, sizeof list_buffer);
+	
+	// Printing total
+	char charred_total[50];
+	sprintf(charred_total, "<big><b>%i</b></big>", total);
+	gtk_label_set_markup(GTK_LABEL(total_display_label), charred_total);
 	memset(output, 0, sizeof output);
 }
 
