@@ -1,10 +1,12 @@
 #include <gtk/gtk.h>
 
 // Defining interactive elements
+// Main window
 GtkWidget *total_display_label;
 GtkWidget *list_display_label;
 GtkWidget *sides_input_spin;
 GtkWidget *amount_input_spin;
+// Stats window
 
 // Dice defaults
 int sides_dice = 6;
@@ -13,6 +15,7 @@ int amount_dice = 2;
 int dice_rack[1000]; // Holds all roll values
 int roll_history[10000]; // History of roll totals
 
+// Dice button handlers
 static void print_dice() {
 	char output[1024]; // String that gets pushed onto label
 	output[0] = '\0';
@@ -69,10 +72,29 @@ void amount_spin_handler() {
 	amount_dice = quantity;
 }
 
+// Window stuff handlers
+void show_stats_window() {
+	GtkBuilder *stats_builder;
+	GObject *stats_window;
+	
+	stats_builder = gtk_builder_new_from_file("ui/stats.ui");
+	stats_window = gtk_builder_get_object(stats_builder, "stats_window");
+	gtk_builder_connect_signals(stats_builder, NULL);
+	
+	g_object_unref(stats_builder);
+	
+	gtk_widget_show(GTK_WIDGET (stats_window));
+}
+
 // Called when window is closed
 void on_main_window_destroy() {
     gtk_main_quit();
 }
+
+void on_stats_window_destroy(GtkWindow *window) {
+    gtk_window_close(window);
+}
+
 
 int main (int argc, char **argv) { //Main function should be as small as possible.
 	GtkBuilder *builder;
