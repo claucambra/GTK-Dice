@@ -1,16 +1,18 @@
 #include <gtk/gtk.h>
 
 GtkWidget *total_display_label;
+GtkWidget *list_display_label;
 
 // Dice defaults
 int sides_dice = 6;
-int num_dice = 2;
+int num_dice = 20;
 
 int dice_rack[1000];
 int roll_history[10000];
 
 static void print_dice() {
 	char output[1024];
+	output[0] = '\0';
 	int i = 0;
 	int total = 0;
 	char list_buffer[50];
@@ -20,7 +22,9 @@ static void print_dice() {
 		total += dice_rack[i];
 		i++;
 	}
-
+	
+	//Printing list of dice
+	gtk_label_set_markup(GTK_LABEL(list_display_label),	output);
 	memset(list_buffer, 0, sizeof list_buffer);
 	
 	// Printing total
@@ -79,6 +83,7 @@ int main (int argc, char **argv) { //Main function should be as small as possibl
 	g_signal_connect (button, "clicked", G_CALLBACK(roll_dice), NULL);
 	
 	total_display_label = GTK_WIDGET(gtk_builder_get_object(builder, "total_display"));
+	list_display_label = GTK_WIDGET(gtk_builder_get_object(builder, "list_display"));
 	
 	//Random num generator for dice, seed set as current time
 	srand(time(NULL));
