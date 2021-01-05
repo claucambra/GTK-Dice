@@ -2,24 +2,57 @@
 
 GtkWidget *total_display_label;
 
+
+// Dice defaults
 int sides_dice = 6;
 int num_dice = 2;
 
 int dice_rack[1000];
 int roll_history[10000];
 
-static void
-print_die(GtkWidget *widget, gpointer data) {
-	char output[50];
-	sprintf(output, "<big><b>%i</b></big>", rand() % sides_dice + 1);
-	gtk_label_set_markup(GTK_LABEL(total_display_label), output);
+static void print_dice() {
+	char output[1024];
+	//sprintf(output, "<big><b>%i</b></big>", rand() % sides_dice + 1);
+	int i = 0;
+	int total = 0;
+	char buffer[50];
+	while(dice_rack[i] != 0) {
+		//sprintf(buffer, "DICE %i: %i\n", i + 1, dice_rack[i]);
+		//strcat(output, buffer); 
+		total += dice_rack[i];
+		i++;
+	}
+	sprintf(buffer, "\nTOTAL: %i", total);
+	strcat(output, buffer);
+	memset(buffer, 0, sizeof buffer);
+	gtk_label_set_text(GTK_LABEL(total_display_label), output);
+	memset(output, 0, sizeof output);
 }
 
-// called when window is closed
+void roll_dice() {
+	int roll_total = 0;
+	
+	memset(dice_rack, 0, sizeof dice_rack);
+	for(int i = 0; i < num_dice; i++) {
+		dice_rack[i] = rand() % sides_dice + 1;
+		roll_total += dice_rack[i];
+	}
+	
+	int i = 0;
+	while(roll_history[i] != 0) {
+		i++;
+	}
+	roll_history[i] = roll_total;
+	
+	print_dice();
+}
+
+// Called when window is closed
 void on_window_main_destroy()
 {
     gtk_main_quit();
 }
+
 
 int main (int argc, char **argv) { //Main function should be as small as possible.
 	GtkBuilder *builder;
@@ -42,7 +75,7 @@ int main (int argc, char **argv) { //Main function should be as small as possibl
     g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
 	
 	button = gtk_builder_get_object (builder, "roll_button");
-	g_signal_connect (button, "clicked", G_CALLBACK(print_die), NULL);
+	g_signal_connect (button, "clicked", G_CALLBACK(roll_dice), NULL);
 	
 	total_display_label = GTK_WIDGET(gtk_builder_get_object(builder, "total_display"));
 	
