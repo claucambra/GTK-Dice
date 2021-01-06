@@ -77,8 +77,11 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="label" translatable="yes">0</property>
+                <property name="wrap">True</property>
+                <property name="wrap-mode">char</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
+                  <attribute name="scale" value="4"/>
                 </attributes>
               </object>
               <packing>
@@ -267,8 +270,18 @@
             <property name="receives-default">True</property>
             <signal name="clicked" handler="show_stats_window" swapped="no"/>
           </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="reset_button">
+            <property name="label" translatable="yes">Reset</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <signal name="clicked" handler="reset" swapped="no"/>
+          </object>
           <packing>
             <property name="pack-type">end</property>
+            <property name="position">1</property>
           </packing>
         </child>
       </object>
