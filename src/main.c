@@ -7,6 +7,7 @@ GtkWidget *list_display_label;
 GtkWidget *sides_input_spin;
 GtkWidget *amount_input_spin;
 // Stats window
+GtkWidget *stats_display_label;
 
 // Dice defaults
 int sides_dice = 6;
@@ -16,7 +17,7 @@ int dice_rack[1000]; // Holds all roll values
 int roll_history[10000]; // History of roll totals
 
 // Dice button handlers
-static void print_dice() {
+void print_dice() {
 	char output[1024]; // String that gets pushed onto label
 	output[0] = '\0';
 	int i = 0;
@@ -80,6 +81,65 @@ void show_stats_window() {
 	stats_builder = gtk_builder_new_from_file("ui/stats.ui");
 	stats_window = gtk_builder_get_object(stats_builder, "stats_window");
 	gtk_builder_connect_signals(stats_builder, NULL);
+	
+	if (roll_history[0] != 0) {
+		stats_display_label = GTK_WIDGET(gtk_builder_get_object(stats_builder, "stats_display"));
+		
+		char output[4096];
+		char stat_buffer[50];
+		int min_num = roll_history[0], max_num = roll_history[0], nextnum, i = 0;
+		
+		while(roll_history[i] != 0) { 
+			nextnum = roll_history[i];
+			
+			if(min_num > nextnum)
+				min_num = nextnum;
+			
+			i++;
+		}
+		i = 0;
+		
+		while(roll_history[i] != 0) { 
+			nextnum = roll_history[i];
+			
+			if(max_num < nextnum)
+				max_num = nextnum;
+			
+			i++;
+		}
+		i = 0;
+		
+		//Loop prints bar chart
+		sprintf(stat_buffer, "<big><b>FREQUENCY OF TOTALS:</b></big>\n");
+		g_strlcat(output, stat_buffer, 4096);
+		memset(stat_buffer, 0, sizeof stat_buffer);
+		
+		int current_total = 0, this_num_count = 0;
+		char bar[200];
+		for(int num = min_num; num <= max_num; num++) {
+			
+			while(roll_history[current_total] != 0) { //Count number of occurrences of each total
+				if (roll_history[current_total] == num)
+					this_num_count++;
+				current_total++;
+			}
+			
+			int barcount;
+			for(barcount = 0; barcount < this_num_count; barcount++) { //Draw bar for bar chart
+				bar[barcount] = '#';
+			}
+			bar[barcount] = '\0'; //Prevent garbled string being read
+			
+			sprintf(stat_buffer, "%i:\t%s\n", num, bar);
+			g_strlcat(output, stat_buffer, 4096);
+			memset(stat_buffer, 0, sizeof stat_buffer);
+			
+			memset(bar, 0, sizeof bar);
+			current_total = 0;
+			this_num_count = 0;
+		}
+		gtk_label_set_markup(GTK_LABEL(stats_display_label), output);
+	}
 	
 	g_object_unref(stats_builder);
 	
