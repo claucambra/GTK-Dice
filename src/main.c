@@ -82,13 +82,14 @@ void show_stats_window() {
 	stats_window = gtk_builder_get_object(stats_builder, "stats_window");
 	gtk_builder_connect_signals(stats_builder, NULL);
 	
-	if (roll_history[0] != 0) {
+	if (roll_history[0] != 0) { // If there has been a roll...
 		stats_display_label = GTK_WIDGET(gtk_builder_get_object(stats_builder, "stats_display"));
 		
-		char output[4096];
-		char stat_buffer[50];
-		int min_num = roll_history[0], max_num = roll_history[0], nextnum, i = 0;
+		char output[4096]; // This will be set as the target label text
+		char stat_buffer[50]; // Buffer for each line of the output text
+		int min_num = roll_history[0], max_num = roll_history[0], nextnum, i = 0; // Min and max totals to be printed
 		
+		// Set min_num smallest number in results total array
 		while(roll_history[i] != 0) { 
 			nextnum = roll_history[i];
 			
@@ -97,8 +98,9 @@ void show_stats_window() {
 			
 			i++;
 		}
-		i = 0;
+		i = 0; // Reset iteration counter for next uses
 		
+		// Set max_num to biggest number in results total array
 		while(roll_history[i] != 0) { 
 			nextnum = roll_history[i];
 			
@@ -109,31 +111,40 @@ void show_stats_window() {
 		}
 		i = 0;
 		
-		//Loop prints bar chart
+		// Printing bar chart
+		// Add header to bar chart, with markup
 		sprintf(stat_buffer, "<big><b>FREQUENCY OF TOTALS:</b></big>\n");
 		g_strlcat(output, stat_buffer, 4096);
-		memset(stat_buffer, 0, sizeof stat_buffer);
+		memset(stat_buffer, 0, sizeof stat_buffer); // Reset stat line buffer
 		
-		int current_total = 0, this_num_count = 0;
+		// current_total holds the total that is going to have its frequency calculated.
+		// this_num_count holds the frequency of this total.
+		int current_total = 0, this_num_count = 0; 
+		// Bar is the actual bar to be printed on the line.
 		char bar[45];
+		// This for loop starts at the min total result and goes to the max.
 		for(int num = min_num; num <= max_num; num++) {
-			
-			while(roll_history[current_total] != 0) { //Count number of occurrences of each total
+		
+			//Count number of occurrences of each total	
+			while(roll_history[current_total] != 0) {
 				if (roll_history[current_total] == num)
 					this_num_count++;
 				current_total++;
 			}
 			
+			//Draw bar for bar chart
 			int barcount;
-			for(barcount = 0; barcount < this_num_count; barcount++) { //Draw bar for bar chart
-				bar[barcount] = '#';
+			for(barcount = 0; barcount < this_num_count; barcount++) {
+				bar[barcount] = '#'; // Stamp char onto bar array
 			}
-			bar[barcount] = '\0'; //Prevent garbled string being read
+			bar[barcount] = '\0'; // Add string finisher to prevent garbage being printed
 			
+			// Print bar and details onto the line buffer
 			sprintf(stat_buffer, "%i:\t%s\n", num, bar);
 			g_strlcat(output, stat_buffer, 4096);
 			memset(stat_buffer, 0, sizeof stat_buffer);
 			
+			// Clear variables
 			memset(bar, 0, sizeof bar);
 			current_total = 0;
 			this_num_count = 0;
