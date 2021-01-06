@@ -115,7 +115,7 @@ void show_stats_window() {
 		memset(stat_buffer, 0, sizeof stat_buffer);
 		
 		int current_total = 0, this_num_count = 0;
-		char bar[200];
+		char bar[45];
 		for(int num = min_num; num <= max_num; num++) {
 			
 			while(roll_history[current_total] != 0) { //Count number of occurrences of each total
