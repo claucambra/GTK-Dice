@@ -18,7 +18,7 @@ int roll_history[10000]; // History of roll totals
 
 // Dice button handlers
 void print_dice() {
-	char output[1024]; // String that gets pushed onto label
+	char output[16384]; // String that gets pushed onto label
 	output[0] = '\0';
 	int i = 0;
 	int total = 0;
@@ -29,7 +29,7 @@ void print_dice() {
 		else
 			sprintf(list_buffer, "\nDICE %i: %i", i + 1, dice_rack[i]);
 			
-		g_strlcat(output, list_buffer, 1024); 
+		g_strlcat(output, list_buffer, 16384); 
 		total += dice_rack[i];
 		i++;
 	}
@@ -85,7 +85,7 @@ void show_stats_window() {
 	if (roll_history[0] != 0) { // If there has been a roll...
 		stats_display_label = GTK_WIDGET(gtk_builder_get_object(stats_builder, "stats_display"));
 		
-		char output[4096]; // This will be set as the target label text
+		char output[16384]; // This will be set as the target label text
 		char stat_buffer[50]; // Buffer for each line of the output text
 		int min_num = roll_history[0], max_num = roll_history[0], nextnum, i = 0; // Min and max totals to be printed
 		
@@ -114,7 +114,7 @@ void show_stats_window() {
 		// Printing bar chart
 		// Add header to bar chart, with markup
 		sprintf(stat_buffer, "<big><b>FREQUENCY OF TOTALS:</b></big>\n");
-		g_strlcat(output, stat_buffer, 4096);
+		g_strlcat(output, stat_buffer, 16384);
 		memset(stat_buffer, 0, sizeof stat_buffer); // Reset stat line buffer
 		
 		// current_total holds the total that is going to have its frequency calculated.
@@ -141,7 +141,7 @@ void show_stats_window() {
 			
 			// Print bar and details onto the line buffer
 			sprintf(stat_buffer, "%i:\t%s\n", num, bar);
-			g_strlcat(output, stat_buffer, 4096);
+			g_strlcat(output, stat_buffer, 16384);
 			memset(stat_buffer, 0, sizeof stat_buffer);
 			
 			// Clear variables
