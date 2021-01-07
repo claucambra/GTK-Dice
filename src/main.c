@@ -9,7 +9,20 @@ GtkWidget *amount_input_spin;
 // Stats window
 GtkWidget *stats_display_label;
 
+
+// Dice defaults
+int sides_dice = 6;
+int amount_dice = 2;
+int dice_rack[1000]; // Holds all roll values
+int roll_history[10000]; // History of roll totals
+
 // Dice images
+enum {
+  COL_DISPLAY_NAME,
+  COL_PIXBUF,
+  NUM_COLS
+};
+
 #define DICE_6_1 "resources/Dice-1.svg"
 #define DICE_6_2 "resources/Dice-2.svg"
 #define DICE_6_3 "resources/Dice-3.svg"
@@ -18,25 +31,57 @@ GtkWidget *stats_display_label;
 #define DICE_6_6 "resources/Dice-6.svg"
 const char *dice_6_filenames[] = {DICE_6_1, DICE_6_2, DICE_6_3, DICE_6_4, DICE_6_5, DICE_6_6};
 
-static GdkPixbuf *dice_pixbuf;
+static GdkPixbuf* dice_6_pixbufs[6];
 
+// Need to load the pictures into memory first
 static void load_pixbufs () {
 	for (int i = 0; i < 6; i++) {
-		dice_pixbuf = gdk_pixbuf_new_from_resource (dice_6_filenames[i], NULL);
-		g_assert (dice_pixbuf); // Must be loaded successfully
+		dice_6_pixbufs[i] = gdk_pixbuf_new_from_resource (dice_6_filenames[i], NULL);
+		g_assert (dice_6_pixbufs[i]); // Must be loaded successfully
 	}
 }
 
 static void fill_store (GtkListStore *store) {
-
+	GtkTreeIter iter;
+	
+	// Clear the store of old stuff
+	gtk_list_store_clear (store);
+	
+	int i = 0;
+	while(dice_rack[i] != 0) {
+		GdkPixbuf *current_dice_pixbuf;
+		char dice_name[9];
+		
+		sprintf(dice_name, "DICE %i", i);
+		switch(dice_rack[i]) {
+			case 1:
+				current_dice_pixbuf = dice_6_pixbufs[0];
+				break;
+			case 2:
+				current_dice_pixbuf = dice_6_pixbufs[1];
+				break;
+			case 3:
+				current_dice_pixbuf = dice_6_pixbufs[2];
+				break;
+			case 4:
+				current_dice_pixbuf = dice_6_pixbufs[3];
+				break;
+			case 5:
+				current_dice_pixbuf = dice_6_pixbufs[4];
+				break;
+			case 6: 
+				current_dice_pixbuf = dice_6_pixbufs[5];
+				break;
+		}
+	
+		gtk_list_store_append (store, &iter);
+		gtk_list_store_set (store, &iter, 
+							COL_DISPLAY_NAME, dice_name,
+							COL_PIXBUF, current_dice_pixbuf,
+							-1);
+		g_free(dice_name);
+	}			
 }		
-
-// Dice defaults
-int sides_dice = 6;
-int amount_dice = 2;
-
-int dice_rack[1000]; // Holds all roll values
-int roll_history[10000]; // History of roll totals
 
 // Dice button handlers
 void print_dice() {
