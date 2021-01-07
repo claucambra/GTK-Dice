@@ -9,6 +9,28 @@ GtkWidget *amount_input_spin;
 // Stats window
 GtkWidget *stats_display_label;
 
+// Dice images
+#define 6DICE_1 "resources/Dice-1.svg"
+#define 6DICE_2 "resources/Dice-2.svg"
+#define 6DICE_3 "resources/Dice-3.svg"
+#define 6DICE_4 "resources/Dice-4.svg"
+#define 6DICE_5 "resources/Dice-5.svg"
+#define 6DICE_6 "resources/Dice-6.svg"
+const char *6dice_filenames[] = {6DICE_1, 6DICE_2, 6DICE_3, 6DICE_4, 6DICE_5, 6DICE_6};
+
+static GdkPixbuf *dice_pixbuf;
+
+static void load_pixbufs () {
+	for (int i = 0; i < 6; i++) {
+		dice_pixbuf = gdk_pixbuf_new_from_resource (6dice_filenames[i], NULL);
+		g_assert (dice_pixbuf); // Must be loaded successfully
+	}
+}
+
+static void fill_store (GtkListStore *store) {
+
+}		
+
 // Dice defaults
 int sides_dice = 6;
 int amount_dice = 2;
