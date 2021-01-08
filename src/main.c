@@ -271,8 +271,8 @@ void reset() {
 	memset(roll_history, 0, sizeof roll_history);
 	
 	// These vars have already been initialised, saving us from calling Builder again.
+	print_dice();
 	gtk_label_set_markup(GTK_LABEL(total_display_label), "0");
-	gtk_label_set_markup(GTK_LABEL(list_display_label), "");
 	gtk_spin_button_set_value((GtkSpinButton*)sides_input_spin, sides_dice);
 	gtk_spin_button_set_value((GtkSpinButton*)amount_input_spin, amount_dice);
 }
