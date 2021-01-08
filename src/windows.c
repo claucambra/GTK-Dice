@@ -226,6 +226,7 @@ void show_stats_window() {
 			this_num_count = 0;
 		}
 		gtk_label_set_markup(GTK_LABEL(stats_display_label), output);
+		memset(output, 0, sizeof output);
 	}
 	
 	g_object_unref(stats_builder);
