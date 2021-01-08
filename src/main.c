@@ -24,12 +24,12 @@ enum {
   NUM_COLS
 };
 
-#define DICE_6_1 "resources/Dice-1.svg"
-#define DICE_6_2 "resources/Dice-2.svg"
-#define DICE_6_3 "resources/Dice-3.svg"
-#define DICE_6_4 "resources/Dice-4.svg"
-#define DICE_6_5 "resources/Dice-5.svg"
-#define DICE_6_6 "resources/Dice-6.svg"
+#define DICE_6_1 "resources/Dice-1.png"
+#define DICE_6_2 "resources/Dice-2.png"
+#define DICE_6_3 "resources/Dice-3.png"
+#define DICE_6_4 "resources/Dice-4.png"
+#define DICE_6_5 "resources/Dice-5.png"
+#define DICE_6_6 "resources/Dice-6.png"
 const char *dice_6_filenames[] = {DICE_6_1, DICE_6_2, DICE_6_3, DICE_6_4, DICE_6_5, DICE_6_6};
 
 static GdkPixbuf* dice_6_pixbufs[6];
@@ -37,7 +37,7 @@ static GdkPixbuf* dice_6_pixbufs[6];
 // Need to load the pictures into memory first
 static void load_pixbufs () {
 	for (int i = 0; i < 6; i++) {
-		dice_6_pixbufs[i] = gdk_pixbuf_new_from_resource (dice_6_filenames[i], NULL);
+		dice_6_pixbufs[i] = gdk_pixbuf_new_from_file (dice_6_filenames[i], NULL);
 		g_assert (dice_6_pixbufs[i]); // Must be loaded successfully
 	}
 }
@@ -80,7 +80,8 @@ static void fill_store (GtkListStore *store) {
 							COL_DISPLAY_NAME, dice_name,
 							COL_PIXBUF, current_dice_pixbuf,
 							-1);
-		g_free(dice_name);
+		//g_free(dice_name);
+		i++;
 	}			
 }
 
@@ -135,6 +136,8 @@ void print_dice() {
 	sprintf(charred_total, "<big><b>%i</b></big>", total);
 	gtk_label_set_markup(GTK_LABEL(total_display_label), charred_total);
 	memset(output, 0, sizeof output);
+	
+	print_icon_view();
 }
 
 void roll_dice() { // Called by roll button
