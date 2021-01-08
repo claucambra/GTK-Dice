@@ -131,7 +131,7 @@
                         <property name="can-focus">False</property>
                         <property name="shadow-type">none</property>
                         <child>
-                          <object class="GtkIconView">
+                          <object class="GtkIconView" id="icons_display">
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="margin">6</property>

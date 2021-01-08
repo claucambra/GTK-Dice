@@ -6,6 +6,7 @@ GtkWidget *total_display_label;
 GtkWidget *list_display_label;
 GtkWidget *sides_input_spin;
 GtkWidget *amount_input_spin;
+GtkWidget *icon_view;
 // Stats window
 GtkWidget *stats_display_label;
 
@@ -81,7 +82,31 @@ static void fill_store (GtkListStore *store) {
 							-1);
 		g_free(dice_name);
 	}			
-}		
+}
+
+static GtkListStore* create_store () {
+	GtkListStore *store;
+	
+	store = gtk_list_store_new (NUM_COLS, 
+								G_TYPE_STRING, 
+								GDK_TYPE_PIXBUF,
+								G_TYPE_BOOLEAN);
+	// NOTE: You might want a sort function to show the dice in custom orders?
+	return store;
+}
+
+void print_icon_view() {
+	GtkListStore *store;
+	
+	load_pixbufs ();
+	store = create_store();
+	fill_store(store);
+	
+	gtk_icon_view_set_model (GTK_ICON_VIEW (icon_view), GTK_TREE_MODEL (store));
+	g_object_unref (store);
+	gtk_icon_view_set_text_column (GTK_ICON_VIEW (icon_view), COL_DISPLAY_NAME);
+    gtk_icon_view_set_pixbuf_column (GTK_ICON_VIEW (icon_view), COL_PIXBUF);
+}
 
 // Dice button handlers
 void print_dice() {
@@ -279,6 +304,7 @@ int main (int argc, char **argv) { //Main function should be as small as possibl
 	list_display_label = GTK_WIDGET(gtk_builder_get_object(builder, "list_display"));
 	sides_input_spin = GTK_WIDGET(gtk_builder_get_object(builder, "sides_input"));
 	amount_input_spin = GTK_WIDGET(gtk_builder_get_object(builder, "amount_input"));
+	icon_view = GTK_WIDGET(gtk_builder_get_object(builder, "icons_display"));
 	
 	// Set spin input numbers to default values
 	gtk_spin_button_set_value((GtkSpinButton*)sides_input_spin, sides_dice);
