@@ -18,7 +18,7 @@
     <property name="can-focus">False</property>
     <property name="border-width">5</property>
     <property name="default-width">820</property>
-    <property name="default-height">400</property>
+    <property name="default-height">375</property>
     <property name="show-menubar">False</property>
     <signal name="destroy" handler="on_main_window_destroy" swapped="no"/>
     <child>
@@ -51,6 +51,7 @@
               <object class="GtkStackSwitcher" id="rolls_stackswitcher">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="tooltip-text" translatable="yes">Visual view only available for 4, 6, 8, 10, 12, and 20-sided dice.</property>
                 <property name="homogeneous">True</property>
                 <property name="stack">stack1</property>
               </object>
@@ -98,6 +99,7 @@
                 <property name="interpolate-size">True</property>
                 <child>
                   <object class="GtkScrolledWindow" id="rolls_text_scrollwindow">
+                    <property name="name">Text View</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="shadow-type">in</property>
@@ -118,11 +120,12 @@
                   </object>
                   <packing>
                     <property name="name">page0</property>
-                    <property name="title" translatable="yes">page0</property>
+                    <property name="title" translatable="yes">Text view</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkScrolledWindow" id="rolls_picture_scrollwindow">
+                    <property name="name">Visual View</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="window-placement-set">False</property>
@@ -141,7 +144,7 @@
                   </object>
                   <packing>
                     <property name="name">page1</property>
-                    <property name="title" translatable="yes">page1</property>
+                    <property name="title" translatable="yes">Visual view</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -309,10 +312,11 @@
         </child>
         <child>
           <object class="GtkButton" id="reset_button">
-            <property name="label" translatable="yes">Reset</property>
+            <property name="label">gtk-clear</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
+            <property name="use-stock">True</property>
             <signal name="clicked" handler="reset" swapped="no"/>
           </object>
           <packing>
