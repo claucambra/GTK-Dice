@@ -55,7 +55,7 @@ static void fill_store (GtkListStore *store) {
 		GdkPixbuf *current_dice_pixbuf;
 		char dice_name[9];
 		
-		sprintf(dice_name, "DICE %i", i);
+		sprintf(dice_name, "DICE %i", i + 1);
 		switch(dice_rack[i]) {
 			case 1:
 				current_dice_pixbuf = dice_6_pixbufs[0];

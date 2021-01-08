@@ -17,7 +17,7 @@
   <object class="GtkApplicationWindow" id="main_window">
     <property name="can-focus">False</property>
     <property name="border-width">5</property>
-    <property name="default-width">850</property>
+    <property name="default-width">820</property>
     <property name="default-height">400</property>
     <property name="show-menubar">False</property>
     <signal name="destroy" handler="on_main_window_destroy" swapped="no"/>
@@ -125,23 +125,17 @@
                   <object class="GtkScrolledWindow" id="rolls_picture_scrollwindow">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
+                    <property name="window-placement-set">False</property>
                     <property name="shadow-type">in</property>
                     <child>
-                      <object class="GtkViewport">
+                      <object class="GtkIconView" id="icons_display">
                         <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="shadow-type">none</property>
-                        <child>
-                          <object class="GtkIconView" id="icons_display">
-                            <property name="visible">True</property>
-                            <property name="can-focus">True</property>
-                            <property name="margin">5</property>
-                            <property name="selection-mode">none</property>
-                            <property name="row-spacing">5</property>
-                            <property name="column-spacing">5</property>
-                            <property name="item-padding">5</property>
-                          </object>
-                        </child>
+                        <property name="can-focus">True</property>
+                        <property name="margin">5</property>
+                        <property name="selection-mode">none</property>
+                        <property name="row-spacing">5</property>
+                        <property name="column-spacing">5</property>
+                        <property name="item-padding">5</property>
                       </object>
                     </child>
                   </object>
