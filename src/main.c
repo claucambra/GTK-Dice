@@ -6,6 +6,9 @@ GtkWidget *total_display_label;
 GtkWidget *list_display_label;
 GtkWidget *sides_input_spin;
 GtkWidget *amount_input_spin;
+GtkWidget *stack;
+GtkWidget *stack_switcher;
+GtkWidget *text_view_scrollwindow;
 GtkWidget *icon_view;
 // Stats window
 GtkWidget *stats_display_label;
@@ -139,7 +142,13 @@ void print_dice() {
 	gtk_label_set_markup(GTK_LABEL(total_display_label), charred_total);
 	memset(output, 0, sizeof output);
 	
-	print_icon_view();
+	if(sides_dice == 6) {
+		gtk_widget_set_sensitive(stack_switcher, TRUE);
+		print_icon_view();
+	} else {
+		gtk_widget_set_sensitive(stack_switcher, FALSE);
+		gtk_stack_set_visible_child (GTK_STACK(stack), text_view_scrollwindow);
+	}
 }
 
 void roll_dice() { // Called by roll button
@@ -309,6 +318,9 @@ int main (int argc, char **argv) { //Main function should be as small as possibl
 	list_display_label = GTK_WIDGET(gtk_builder_get_object(builder, "list_display"));
 	sides_input_spin = GTK_WIDGET(gtk_builder_get_object(builder, "sides_input"));
 	amount_input_spin = GTK_WIDGET(gtk_builder_get_object(builder, "amount_input"));
+	stack = GTK_WIDGET(gtk_builder_get_object(builder, "stack1"));
+	stack_switcher = GTK_WIDGET(gtk_builder_get_object(builder, "rolls_stackswitcher"));
+	text_view_scrollwindow = GTK_WIDGET(gtk_builder_get_object(builder, "rolls_text_scrollwindow"));
 	icon_view = GTK_WIDGET(gtk_builder_get_object(builder, "icons_display"));
 	
 	// Set spin input numbers to default values
