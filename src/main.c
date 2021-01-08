@@ -54,11 +54,12 @@ static void fill_store (GtkListStore *store) {
 	gtk_list_store_clear (store);
 	
 	int i = 0;
-	while(dice_rack[i] != 0) {
+	while(dice_rack[i] != 0) { // Go through each dice in rack
 		GdkPixbuf *current_dice_pixbuf;
 		char dice_name[9];
 		
 		sprintf(dice_name, "DICE %i", i + 1);
+		// Current pixbuf setter
 		switch(dice_rack[i]) {
 			case 1:
 				current_dice_pixbuf = dice_6_pixbufs[0];
@@ -85,7 +86,6 @@ static void fill_store (GtkListStore *store) {
 							COL_DISPLAY_NAME, dice_name,
 							COL_PIXBUF, current_dice_pixbuf,
 							-1);
-		//g_free(dice_name);
 		i++;
 	}			
 }
@@ -104,7 +104,7 @@ static GtkListStore* create_store () {
 void print_icon_view() {
 	GtkListStore *store;
 	
-	load_pixbufs ();
+	load_pixbufs();
 	store = create_store();
 	fill_store(store);
 	
@@ -143,10 +143,11 @@ void print_dice() {
 	memset(output, 0, sizeof output);
 	
 	if(sides_dice == 6) {
-		gtk_widget_set_sensitive(stack_switcher, TRUE);
+		gtk_widget_set_sensitive(stack_switcher, TRUE); // Enable switcher
 		print_icon_view();
 	} else {
-		gtk_widget_set_sensitive(stack_switcher, FALSE);
+		gtk_widget_set_sensitive(stack_switcher, FALSE); // Disable switcher
+		// Return to text view of on other stack page
 		gtk_stack_set_visible_child (GTK_STACK(stack), text_view_scrollwindow);
 	}
 }
