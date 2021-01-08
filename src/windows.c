@@ -144,6 +144,7 @@ void reset() {
 	
 	// These vars have already been initialised, saving us from calling Builder again.
 	print_dice();
+	print_icon_view();
 	gtk_label_set_markup(GTK_LABEL(total_display_label), "0");
 	gtk_spin_button_set_value((GtkSpinButton*)sides_input_spin, sides_dice);
 	gtk_spin_button_set_value((GtkSpinButton*)amount_input_spin, amount_dice);
@@ -245,6 +246,7 @@ void amount_spin_handler() {
 }
 
 void roll_button_handler() {
+	roll_dice();
 	print_dice();
 	
 	if(sides_dice == 6) {
@@ -261,7 +263,7 @@ void clear_button_handler() {
 	reset();
 }
 
-void stats_buton_handler() {
+void stats_button_handler() {
 	show_stats_window();
 }
 

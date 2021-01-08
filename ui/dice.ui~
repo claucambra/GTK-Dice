@@ -271,7 +271,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
-                    <signal name="clicked" handler="roll_button_handler" swapped="no"/>
+                    <signal name="clicked" handler="roll_dice" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -307,7 +307,7 @@
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
-            <signal name="clicked" handler="stats_button_handler" swapped="no"/>
+            <signal name="clicked" handler="show_stats_window" swapped="no"/>
           </object>
         </child>
         <child>
@@ -317,7 +317,7 @@
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
             <property name="use-stock">True</property>
-            <signal name="clicked" handler="clear_button_handler" swapped="no"/>
+            <signal name="clicked" handler="reset" swapped="no"/>
           </object>
           <packing>
             <property name="pack-type">end</property>
