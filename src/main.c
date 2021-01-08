@@ -39,6 +39,8 @@ static void load_pixbufs () {
 	for (int i = 0; i < 6; i++) {
 		dice_6_pixbufs[i] = gdk_pixbuf_new_from_file (dice_6_filenames[i], NULL);
 		g_assert (dice_6_pixbufs[i]); // Must be loaded successfully
+		// Resize image
+		dice_6_pixbufs[i] = gdk_pixbuf_scale_simple(dice_6_pixbufs[i], 96, 96, GDK_INTERP_BILINEAR);
 	}
 }
 
